@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Profile Creation</title>
+  <style>
+    /* CSS Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #f0f9ff, #c3e2ff); /* Lighter Blue Gradient */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 36px;
+      color: #0056b3; /* Dark Blue */
+      border-bottom: 3px solid #007bff;
+      padding-bottom: 10px;
+    }
+
+    .profile-container {
+      max-width: 1000px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px; /* Space between form and photo section */
+    }
+
+    .form-section {
+      flex: 2; /* Takes more space */
+      min-width: 350px;
+    }
+
+    .photo-upload-section {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .form-group h4 {
+        color: #0056b3;
+        margin-bottom: 10px;
+        border-bottom: 2px dotted #ccc;
+        padding-bottom: 5px;
+        font-size: 18px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #007bff;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+    
+    .chamber-list div {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px dashed #007bff;
+        border-radius: 6px;
+    }
+
+    .profile-icon {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      object-fit: cover;
+      border: 5px solid #007bff;
+      background-color: #e6f0ff;
+    }
+
+    .action-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .action-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .profile-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .form-section, .photo-upload-section {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="title">Doctor Profile Creation Form</h1>
+  <div class="profile-container">
+    
+    <div class="form-section">
+      <form id="doctor-profile-form" method="POST" action="save_doctor_profile.php">
+
+        <div class="form-group">
+          <h4>Personal Information</h4>
+          <label for="doctorName">Doctor's Full Name</label>
+          <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's Name (e.g., Dr. A. K. Khan)" required />
+
+          <label for="regNo">BMDC Registration Number</label>
+          <input type="text" id="regNo" name="regNo" placeholder="Enter Registration Number" required />
+
+          <label for="specialty">Specialization</label>
+          <select id="specialty" name="specialty" required>
+            <option value="">Select Specialization</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Gynae">Gynaecology & Obstetrics</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="General">General Practitioner</option>
+            </select>
+
+          <label for="mobile">Mobile Number</label>
+          <input type="text" id="mobile" name="mobile" placeholder="11 Digit Mobile Number" required />
+           <!-- ✅ NEW PASSWORD FIELD -->
+          <label for="password">Create Password</label>
+          <input type="password" id="password" name="password" placeholder="Set a secure password" required />
+        </div>
+        </div>
+
+        <div class="form-group">
+          <h4>Education & Credentials</h4>
+          <label for="degrees">All Degrees (Separate with comma)</label>
+          <textarea id="degrees" name="degrees" rows="3" placeholder="Example: MBBS, FCPS (Medicine), MD (Cardiology)" required></textarea>
+
+          <label for="experience">Experience (Years)</label>
+          <input type="number" id="experience" name="experience" placeholder="Total Years of Experience" min="0" />
+
+          <label for="about">Brief Description About the Doctor</label>
+          <textarea id="about" name="about" rows="4" placeholder="Write about your medical field, achievements, etc."></textarea>
+        </div>
+
+        <div class="form-group">
+            <h4>Chamber/Clinic & Fees</h4>
+            <div id="chamber-list" class="chamber-list">
+                <div>
+                    <label>Chamber 1: Name</label>
+                    <input type="text" name="chamber_name_1" placeholder="Clinic/Hospital Name" required/>
+                    <label>Address</label>
+                    <input type="text" name="chamber_address_1" placeholder="Detailed Address" required/>
+                    <label>Consultation Time (e.g., Sat-Tue: 5 PM - 9 PM)</label>
+                    <input type="text" name="chamber_time_1" placeholder="Time & Days" required/>
+                    <label>First Visit Fee (৳)</label>
+                    <input type="number" name="chamber_fee_1" placeholder="Fee" min="0" required/>
+                </div>
+            </div>
+            <button type="button" class="action-btn" onclick="addChamber()">+ Add Another Chamber</button>
+            <label style="margin-top: 15px;">Video Consultation Fee (৳)</label>
+            <input type="number" name="video_fee" placeholder="Fee for Video Call Consultation (Optional)" min="0" />
+        </div>
+        
+        <button type="submit" class="action-btn" style="background-color: #28a745;">Submit & Publish Profile</button>
+      </form>
+    </div>
+
+    <div class="photo-upload-section">
+      <img src="https://via.placeholder.com/180?text=Doctor+Photo" alt="Doctor Profile Photo" class="profile-icon" id="profile-pic" />
+      <button class="action-btn" id="take-photo-btn" style="background-color: #6c757d;">Upload/Take Photo</button>
+      
+      <p style="font-size: 12px; color: #555; margin-top: 10px;">(This button is for photo upload or camera usage.)</p>
+    </div>
+  </div>
+
+  <script>
+    let chamberCount = 1;
+
+    function addChamber() {
+      chamberCount++;
+      const chamberList = document.getElementById('chamber-list');
+      
+      const newChamberDiv = document.createElement('div');
+      
+      newChamberDiv.innerHTML = `
+        <label>Chamber ${chamberCount}: Name</label>
+        <input type="text" name="chamber_name_${chamberCount}" placeholder="Clinic/Hospital Name" required/>
+        <label>Address</label>
+        <input type="text" name="chamber_address_${chamberCount}" placeholder="Detailed Address" required/>
+        <label>Consultation Time (e.g., Sat-Tue: 5 PM - 9 PM)</label>
+        <input type="text" name="chamber_time_${chamberCount}" placeholder="Time & Days" required/>
+        <label>First Visit Fee (৳)</label>
+        <input type="number" name="chamber_fee_${chamberCount}" placeholder="Fee" min="0" required/>
+        <button type="button" onclick="removeChamber(this)" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-top: 10px; float: right;">Remove</button>
+        <div style="clear: both;"></div>
+      `;
+      chamberList.appendChild(newChamberDiv);
+    }
+
+    function removeChamber(buttonElement) {
+      if (chamberCount > 1) {
+        buttonElement.parentElement.remove();
+        chamberCount--;
+        // Re-numbering the labels
+        const allChambers = document.querySelectorAll('.chamber-list > div');
+        allChambers.forEach((chamberDiv, index) => {
+            chamberDiv.querySelector('label').innerText = `Chamber ${index + 1}: Name`;
+        });
+      } else {
+          alert("You must provide details for at least one chamber.");
+      }
+    }
+    
+    // Simple alert for the photo button 
+    document.getElementById('take-photo-btn').addEventListener('click', () => {
+        alert("Photo upload or camera feature will be integrated here.");
+    });
+
+  </script>
+</body>
+</html>

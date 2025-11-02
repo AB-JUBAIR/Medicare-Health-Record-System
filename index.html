@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medicare Health Record System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #00e2d8, #d9f8e5);
+      background-size: 400% 400%;
+      animation: gradientShift 10s ease infinite;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Entry animations (kept subtle) */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.98) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: popIn 0.7s ease forwards;
+      animation-delay: 0.05s;
+    }
+
+    .logo-container img {
+      width: 160px;
+      height: auto;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #004d61;
+      letter-spacing: 1px;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      border-bottom: 3px solid #00c2a8;
+      display: inline-block;
+      padding-bottom: 8px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeInUp 0.75s ease forwards;
+      animation-delay: 0.12s;
+    }
+
+    .welcome-text {
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 50px;
+      letter-spacing: 0.8px;
+      background: linear-gradient(90deg, #0d1b2a, #1b263b, #415a77);
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 8s ease infinite, floatText 3s ease-in-out infinite;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      animation-name: gradientMove, floatText, fadeInUp;
+      animation-duration: 8s, 3s, 0.9s;
+      animation-iteration-count: infinite, infinite, 1;
+      animation-delay: 0s, 0s, 0.18s;
+      animation-fill-mode: both;
+    }
+
+    /* floating effect */
+    @keyframes floatText {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    /* gradient color shift */
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .divider {
+      width: 120px;
+      height: 4px;
+      background: linear-gradient(90deg, #00b4d8, #00dfd8);
+      margin: 0 auto 25px;
+      border-radius: 2px;
+      opacity: 0;
+      animation: popIn 0.6s ease forwards;
+      animation-delay: 0.15s;
+    }
+
+
+    .user-selection {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      animation: fadeInUp 1.4s ease-in-out;
+      /* ensure items never overflow the viewport horizontally */
+      max-width: 100%;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+
+    .user-card {
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: popIn 0.6s ease forwards;
+      /* allow shrinking on small screens */
+      flex: 0 1 auto;
+      min-width: 0;
+    }
+
+    /* stagger user-card animation delays */
+    .user-card:nth-child(1) { animation-delay: 0.22s; }
+    .user-card:nth-child(2) { animation-delay: 0.32s; }
+    .user-card:nth-child(3) { animation-delay: 0.42s; }
+
+    .user-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 50%;
+      background-color: #fff;
+      padding: 5px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .user-card p {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ----------------- MOBILE FIXES (no color/layout changes) ----------------- */
+    @media (max-width: 600px) {
+      /* allow vertical scrolling on small screens so content isn't cut off */
+      body {
+        overflow-y: auto;
+        height: auto;
+        padding: 20px 0;
+      }
+
+      .logo-container img {
+        width: 120px;
+      }
+
+      h1 {
+        font-size: 2rem;
+        padding-bottom: 6px;
+        margin-bottom: 18px;
+        white-space: normal; /* allow wrapping */
+        word-break: break-word;
+        line-height: 1.05;
+      }
+
+      .welcome-text {
+        font-size: 1.05rem;
+        margin-bottom: 20px;
+        letter-spacing: 0.4px;
+        /* reduce float amplitude slightly on small screens */
+        animation: gradientMove 8s ease infinite, floatTextSmall 3s ease-in-out infinite, fadeInUp 1s ease forwards;
+        animation-delay: 0s, 0s, 0.12s;
+        animation-fill-mode: both;
+      }
+
+      @keyframes floatTextSmall {
+        0%,100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+
+      /* Stack user-cards vertically and prevent overflow */
+      .user-selection {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        padding: 0 18px;
+      }
+
+      .user-card {
+        width: 100%;
+        max-width: 320px;
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .user-card img {
+        width: 84px;
+        height: 84px;
+      }
+
+      .user-card p {
+        font-size: 1rem;
+      }
+
+      .divider {
+        margin-bottom: 18px;
+      }
+    }
+
+    /* tablet responsiveness (keeps layout but prevents horizontal overflow) */
+    @media (min-width: 601px) and (max-width: 992px) {
+      body {
+        overflow-y: auto; /* permit small vertical scroll if needed */
+      }
+
+      .logo-container img {
+        width: 140px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+      }
+
+      .welcome-text {
+        font-size: 1.25rem;
+        margin-bottom: 32px;
+      }
+
+      .user-selection {
+        gap: 40px;
+        padding: 0 20px;
+      }
+
+      .user-card img {
+        width: 90px;
+        height: 90px;
+      }
+
+      .user-card p {
+        font-size: 1.1rem;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="logo-container">
+    <img src="Images/logo1.png" alt="Medicare Logo">
+  </div>
+
+  <h1>Medicare Health Record System</h1>
+
+  <div class="divider"></div>
+
+  <p class="welcome-text">
+    Welcome to your digital health companion.
+  </p>
+
+  <div class="user-selection">
+    <div class="user-card" onclick="redirectUser('patient')">
+      <img src="Images/patient.png" alt="Patient">
+      <p>Patient</p>
+    </div>
+    <div class="user-card" onclick="redirectUser('doctor')">
+      <img src="Images/doctor.png" alt="Doctor">
+      <p>Doctor</p>
+    </div>
+    <div class="user-card" onclick="redirectUser('hospital')">
+      <img src="Images/hospital.png" alt="Hospital">
+      <p>Hospital</p>
+    </div>
+  </div>
+
+  <script>
+    function redirectUser(role) {
+      if(role === 'patient') {
+        window.location.href = 'loginPage.html?role=patient';
+      } else if(role === 'doctor') {
+        window.location.href = 'doctor_login.php?role=doctor';
+      } else if(role === 'hospital') {
+        window.location.href = 'HospitalProfile.html?role=hospital';
+      }
+    }
+  </script>
+
+</body>
+
+
+</html>
