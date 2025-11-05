@@ -134,7 +134,7 @@ $doctor = $result->fetch_assoc();
       echo "<p><strong>Mobile:</strong> " . htmlspecialchars($patient['phone']) . "</p>";
       echo "<p><strong>Date Of Birth:</strong> " . htmlspecialchars($patient['dob']) . "</p>";
       echo "<p><strong>Gender:</strong> " . htmlspecialchars($patient['gender']) . "</p>";
-      echo "<p><strong>Gender:</strong> " . htmlspecialchars($patient['" "']) . "</p>";
+      echo "<p><strong>Blood Group:</strong> " . htmlspecialchars($patient['bloodGroup']) . "</p>";
 
       // Upload forms
       echo '<div class="file-upload">';
